@@ -1,20 +1,7 @@
-export default {
-    Query: {
-        products: () => products
-    }
-}
+import GetAllProducts from "../../../services/GetAllProducts";
 
-const products = [
-    {
-      name: 'Mussarela',
-      description: 'Mussarela e molho de tomate',
-    },
-    {
-      name: 'Bacon',
-      description: 'Mussarela e molho de tomate e bacon',
-    },
-    {
-        name: 'Frango',
-        description: 'Mussarela e molho de tomate e frango',
-    },
-];
+export default {
+  Query: {
+    products: async () => await GetAllProducts(),
+  },
+};
