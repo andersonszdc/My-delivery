@@ -1,11 +1,51 @@
 import "reflect-metadata";
-import { ApolloServer } from "apollo-server";
-import typeDefs from "./graphql/typeDefs";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { ApolloServer } from "apollo-server-express";
+import { execute, subscribe } from "graphql";
 import resolvers from "./graphql/resolvers";
+import typeDefs from "./graphql/typeDefs";
+import express from "express";
+import http from "http";
 import "./database";
 
-const server = new ApolloServer({ typeDefs, resolvers });
+(async () => {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
-});
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+  const server = new ApolloServer({
+    schema,
+    plugins: [
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              subscriptionServer.close();
+            },
+          };
+        },
+      },
+    ],
+  });
+
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+    },
+    {
+      server: httpServer,
+      path: "/graphql",
+    }
+  );
+
+  await server.start();
+  server.applyMiddleware({ app });
+
+  httpServer.listen(4000, () =>
+    console.log(`Server is now running on http://localhost:4000/graphql`)
+  );
+})();
