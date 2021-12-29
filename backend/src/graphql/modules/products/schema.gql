@@ -11,3 +11,7 @@ type Mutation {
   addProduct(name: String, description: String): Product
   updateProduct(id: String, name: String, description: String): Product
 }
+
+type Subscription {
+  productAdded: Product
+}

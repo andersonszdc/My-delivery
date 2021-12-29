@@ -15,6 +15,18 @@ import "./database";
 
   const schema = makeExecutableSchema({ typeDefs, resolvers });
 
+  const subscriptionServer = SubscriptionServer.create(
+    {
+      schema,
+      execute,
+      subscribe,
+    },
+    {
+      server: httpServer,
+      path: "/graphql",
+    }
+  );
+
   const server = new ApolloServer({
     schema,
     plugins: [
@@ -29,18 +41,6 @@ import "./database";
       },
     ],
   });
-
-  const subscriptionServer = SubscriptionServer.create(
-    {
-      schema,
-      execute,
-      subscribe,
-    },
-    {
-      server: httpServer,
-      path: "/graphql",
-    }
-  );
 
   await server.start();
   server.applyMiddleware({ app });
