@@ -16,9 +16,11 @@
     "graphql": "^15.8.0",
     "pg": "^8.7.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@types/uuid": "^8.3.3",
     "ts-node-dev": "^1.1.8"
   }
 }
