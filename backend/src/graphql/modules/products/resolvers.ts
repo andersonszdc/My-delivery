@@ -10,16 +10,16 @@ export default {
     products: async () => await GetAllProducts(),
   },
   Mutation: {
-    addProduct: async (_, { name, description }) => {
+    addProduct: async (parent, { name, description }) => {
       return await AddProduct({ name, description });
     },
-    updateProduct: async (_, { id, name, description }) => {
+    updateProduct: async (parent, { id, name, description }) => {
       return await UpdateProduct({ id, name, description });
     },
   },
   Subscription: {
     productAdded: {
-      subscribe: () => pubsub.asyncIterator("PRODUCT_ADDED"),
+      subscribe: (parent, args) => pubsub.asyncIterator("PRODUCT_ADDED"),
     },
   },
 };

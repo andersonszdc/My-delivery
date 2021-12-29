@@ -1,7 +1,6 @@
-import { PubSub } from "graphql-subscriptions";
-import { getRepository } from "typeorm";
-import { Product } from "../entities/Product";
 import { pubsub } from "../graphql/modules/products/resolvers";
+import { Product } from "../entities/Product";
+import { getRepository } from "typeorm";
 
 const AddProduct = async ({ name, description }) => {
   const repo = getRepository(Product);
