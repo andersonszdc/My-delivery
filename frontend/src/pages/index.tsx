@@ -5,6 +5,7 @@ import Cart from '../components/Cart';
 import Layout from '../components/Layout';
 import Menu from '../components/Menu';
 import { useQuery, gql } from '@apollo/client';
+import { useSubscription } from '@apollo/client';
 
 const Wrapper = styled.div`
   display: flex;
@@ -29,27 +30,33 @@ const PRODUCTS = gql`
   }
 `;
 
+const PRODUCT_ADDED = gql`
+  subscription ProductAdded {
+    productAdded {
+      name
+    }
+  }
+`;
+
 const Home = () => {
   const { loading, error, data } = useQuery(PRODUCTS);
-  data && console.log(data);
+  // const added = useSubscription(PRODUCT_ADDED);
+
+  data && console.log(data.products);
+
   if (loading) return <div>loading</div>;
+
   if (error) return <div>error</div>;
-  return <div>sucess</div>;
-};
 
-export const getStaticProps: GetStaticProps = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu`);
-    const data = await res.json();
-
-    return {
-      props: { data },
-    };
-  } catch (err) {
-    return {
-      props: { data: null },
-    };
-  }
+  return <div>
+    <>
+    {data.products.map((product: any, index: number) => (
+      <div key={index}>
+        <h2>{product.name}</h2>
+      </div>
+    ))}
+    </>
+  </div>;
 };
 
 Home.layout = Layout;
