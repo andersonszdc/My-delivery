@@ -9,7 +9,6 @@ export default createGlobalStyle`
 
     body {
         font-family: 'Quicksand', sans-serif;
-        background-color: #EFEEEE;
         max-width: 1100px;
         margin: 30px auto;
         padding: 0 32px;
