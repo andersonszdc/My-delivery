@@ -10,62 +10,80 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: 1px 1px 2px 0px #7D7D7D, -1px -1px 2px 0px #FFFFFF;
+  border: 1px solid #f2f2f2;
   border-radius: 16px;
   padding: 24px;
-  align-items: center;
   cursor: pointer;
 
-  .item-img {
-    width: 100px;
+  .item {
+    display: grid;
+    grid-template:
+      'name image' auto
+      'description image' auto
+      / auto auto;
   }
 
-  .item-label {
-    font-size: 14px;
-    font-weight: 600;
+  .item-name {
+    font-size: 20px;
+    font-weight: 400;
+    grid-area: name;
   }
 
-  .item-price {
+  .item-description {
     font-size: 16px;
-    font-weight: 700;
-    color: #FF7A00;
+    font-weight: 400;
+    grid-area: description;
   }
-`
+
+  .item-image {
+    grid-area: image;
+  }
+
+  .price {
+    font-size: 20px;
+    font-weight: 400;
+    color: #ff7a00;
+  }
+`;
 
 const DefaultItem = {
   name: 'Mussarela',
-  price: 5.00
-}
+  price: 5.0,
+  description: 'Feita com recheio cremoso de uma mistura de chocolates...',
+};
 
-const Item = ({info}: any) => {
-
-  const [isClicked, setIsClicked] = useState(false)
-  const [item, setItem] = useState(DefaultItem)
+const Item = ({ item }: any) => {
+  const [isClicked, setIsClicked] = useState(false);
+  const [item2, setItem] = useState(DefaultItem);
 
   const openModal = () => {
-    setIsClicked(true)
-  }
+    setIsClicked(true);
+  };
 
-  useEffect(() => {
-    return setItem(info);
-  },[setItem, info])
+  // useEffect(() => {
+  //   return setItem(info);
+  // },[setItem, info])
 
   return (
     <>
-    <Wrapper onClick={openModal}>
-      <div className="item-img">
-        <Image src={pizza} alt='' />
-      </div>
-      <h2 className="item-label">{item.name}</h2>
-      <h2 className="item-price">{CurrencyConversion(item.price)}</h2>
-    </Wrapper>
-    {isClicked && (
-      <Portal>
-        <ItemModal item={item} setIsClicked={setIsClicked} />
-      </Portal>
-    )}
+      <Wrapper>
+        <div className="item">
+          <h2 className="item-name">{item.name}</h2>
+          <h2 className="item-description">{item2.description}</h2>
+          <div className="item-image">
+            <Image src={pizza} alt="" />
+          </div>
+        </div>
+        <h2 className="price">{CurrencyConversion(item2.price)}</h2>
+      </Wrapper>
+
+      {isClicked && (
+        <Portal>
+          <ItemModal item={item} setIsClicked={setIsClicked} />
+        </Portal>
+      )}
     </>
   );
-}
+};
 
 export default Item;

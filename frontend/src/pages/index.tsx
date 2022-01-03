@@ -6,10 +6,13 @@ import Layout from '../components/Layout';
 import Menu from '../components/Menu';
 import { useQuery, gql } from '@apollo/client';
 import { useSubscription } from '@apollo/client';
+import Item from '../components/Item';
 
 const Wrapper = styled.div`
-  display: flex;
-  gap: 24px;
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, auto));
+  gap: 16px;
 `;
 
 interface itemProps {
@@ -49,13 +52,11 @@ const Home = () => {
   if (error) return <div>error</div>;
 
   return <div>
-    <>
+    <Wrapper>
     {data.products.map((product: any, index: number) => (
-      <div key={index}>
-        <h2>{product.name}</h2>
-      </div>
+      <Item key={index} item={product} />
     ))}
-    </>
+    </Wrapper>
   </div>;
 };
 
