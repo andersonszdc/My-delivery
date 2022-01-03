@@ -14,6 +14,11 @@ const Wrapper = styled.div`
   border-radius: 16px;
   padding: 24px;
   cursor: pointer;
+  transition: .15s ease-out;
+
+  :hover {
+    border-color: #ff7a00;
+  }
 
   .item {
     display: grid;
@@ -59,10 +64,6 @@ const Item = ({ item }: any) => {
   const openModal = () => {
     setIsClicked(true);
   };
-
-  // useEffect(() => {
-  //   return setItem(info);
-  // },[setItem, info])
 
   return (
     <>
