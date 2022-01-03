@@ -8,7 +8,7 @@ export default createGlobalStyle`
     }
 
     body {
-        font-family: 'Quicksand', sans-serif;
+        font-family: 'Roboto', sans-serif;
         max-width: 1100px;
         margin: 30px auto;
         padding: 0 32px;
