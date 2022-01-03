@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Portal from '../HOC/Portal';
-import ilustration from '../assets/img-logo.png';
 import Image from 'next/image';
 
 const WrapperAdress = styled.div`
@@ -172,9 +171,6 @@ const AdressForm = () => {
           <button className="btn-type">Retirada</button>
         </OrderType>
         <AdressInfo>
-          <div className="adress-img">
-            <Image src={ilustration} alt="" />
-          </div>
           <div>
             <h2 className="adress-rua">
               {adress.rua || 'Rua Apolinário, 123'}
