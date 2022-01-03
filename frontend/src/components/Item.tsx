@@ -66,7 +66,7 @@ const Item = ({ item }: any) => {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper onClick={openModal}>
         <div className="item">
           <h2 className="item-name">{item.name}</h2>
           <h2 className="item-description">{item2.description}</h2>
@@ -78,8 +78,8 @@ const Item = ({ item }: any) => {
       </Wrapper>
 
       {isClicked && (
-        <Portal>
-          <ItemModal item={item} setIsClicked={setIsClicked} />
+        <Portal modal="itemModal">
+          <ItemModal item={DefaultItem} setIsClicked={setIsClicked} />
         </Portal>
       )}
     </>

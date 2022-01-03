@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-const Portal = ({ children }: any) => {
+const Portal = ({ children, modal }: any) => {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ const Portal = ({ children }: any) => {
   return mounted
     ? createPortal(
         children,
-        document.querySelector('#itemModal') as HTMLDivElement
+        document.querySelector(`#${modal}`) as HTMLDivElement
       )
     : null;
 };

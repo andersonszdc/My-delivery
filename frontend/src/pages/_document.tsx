@@ -48,6 +48,7 @@ import Document, { DocumentContext, DocumentInitialProps, Html,
           <body>
             <Main />
             <div id='itemModal' />
+            <div id='cartModal' />
             <NextScript />
           </body>
         </Html>

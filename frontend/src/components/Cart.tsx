@@ -8,32 +8,39 @@ import DeleteModal from './DeleteModal';
 import MobileCartBar from './MobileCartBar';
 
 const Wrapper = styled.div`
+  position: fixed;
+  right: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: right;
+`
+
+const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-  width: 100%;
+  width: 400px;
+  background-color: #FFF;
+  height: 100%;
+  padding: 32px;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
 
   .cart-label {
     font-size: 16px;
     font-weight: 600;
-    box-shadow: 1px 1px 2px 0px #7d7d7d, -1px -1px 2px 0px #ffffff;
-    padding: 8px 16px;
-    border-radius: 16px;
   }
 
   .cart-items {
-    box-shadow: 1px 1px 2px 0px #7d7d7d, -1px -1px 2px 0px #ffffff;
-    padding: 8px 16px;
-    border-radius: 16px;
   }
 
   .cart-info {
     display: grid;
     row-gap: 12px;
     grid-template-columns: 1fr 1fr;
-    box-shadow: 1px 1px 2px 0px #7d7d7d, -1px -1px 2px 0px #ffffff;
-    border-radius: 16px;
-    padding: 8px 16px;
     font-weight: 700;
     font-size: 12px;
   }
@@ -94,7 +101,7 @@ const Item = styled.div`
   }
 `;
 
-const Cart = ({ hasButton }: any) => {
+const Cart = ({ setIsOpenModal }: any) => {
   const route = useRouter();
   const { state, setState } = useContext(OrderContext);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -136,17 +143,21 @@ const Cart = ({ hasButton }: any) => {
     }
   };
 
+  const CloseModal = (e: any) => {
+    if (e.target.className.includes("Wrapper")) {
+      setIsOpenModal(false)
+    }
+  }
+
   return (
-    <>
-      <MobileCartBar />
-      <Wrapper>
-        <h2 className="cart-label">Meu carinho</h2>
+    <Wrapper onClick={CloseModal}>
+      <Content>
+        <h2 className="cart-label">Seu pedido</h2>
         <div className="cart-items">
           {state.products.length !== 0 ? (
             state.products.map((item: any, index: any) => (
               <Item key={index}>
                 <p className="item">{item.name}</p>
-                {hasButton ? (
                   <div className="controller">
                     <span
                       className="btn-mount"
@@ -188,9 +199,6 @@ const Cart = ({ hasButton }: any) => {
                       </svg>
                     </span>
                   </div>
-                ) : (
-                  <div />
-                )}
                 <p className="item price">
                   {CurrencyConversion(item.price * item.mount)}
                 </p>
@@ -207,21 +215,13 @@ const Cart = ({ hasButton }: any) => {
           <p className="cart-value">R$ 5,00</p>
           <p>Total: </p>
           <p className="cart-value">{CurrencyConversion(state.total + 5)}</p>
-
-          {hasButton && (
             <button onClick={GoToCheckout} className="cart-btn">
               Realizar pagamento
             </button>
-          )}
           {message && <p>{message}</p>}
         </div>
-      </Wrapper>
-      {isOpenDeleteModal && (
-        <Portal>
-          <DeleteModal close={setIsOpenDeleteModal} index={indexDelete} />
-        </Portal>
-      )}
-    </>
+      </Content>
+    </Wrapper>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import logoPng from '../assets/logo.png';
@@ -6,6 +6,8 @@ import accountIcon from '../assets/account.svg';
 import bagIcon from '../assets/bag.svg';
 import logoutIcon from '../assets/logout.svg';
 import downArrowIcon from '../assets/downArrow.svg';
+import Portal from '../HOC/Portal';
+import Cart from './Cart';
 
 const Wrapper = styled.div`
   display: flex;
@@ -21,7 +23,15 @@ const Wrapper = styled.div`
 `;
 
 const Index: React.FC = () => {
+
+  const [isOpenModal, setIsOpenModal] = useState(false)
+
+  const openModal = () => {
+    setIsOpenModal(true)
+  }
+
   return (
+    <>
     <Wrapper>
       <div>
         <Image alt="logo" src={logoPng} />
@@ -39,10 +49,17 @@ const Index: React.FC = () => {
       </div>
       <div className="navbar">
         <Image alt="icon" src={accountIcon} />
-        <Image alt="icon" src={bagIcon} />
+        <Image onClick={openModal} alt="icon" src={bagIcon} />
         <Image alt="icon" src={logoutIcon} />
       </div>
     </Wrapper>
+
+    {isOpenModal && (
+      <Portal modal="cartModal">
+        <Cart setIsOpenModal={setIsOpenModal}  />
+      </Portal>
+    )}
+    </>
   );
 };
 
