@@ -48,7 +48,7 @@ dotenv.config();
   await server.start();
   server.applyMiddleware({ app });
 
-  httpServer.listen(4000, () =>
+  httpServer.listen(process.env.PORT || 3000, () =>
     console.log(`Server is now running on http://localhost:4000/graphql`)
   );
 })();
