@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import "reflect-metadata";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -8,6 +9,8 @@ import typeDefs from "./graphql/typeDefs";
 import express from "express";
 import http from "http";
 import "./database";
+
+dotenv.config();
 
 (async () => {
   const app = express();
