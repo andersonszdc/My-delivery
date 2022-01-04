@@ -10,7 +10,7 @@
     "build": "tsc",
     "dev": "ts-node-dev --transpile-only src/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
-    "start": "node build/server.js"
+    "start": "npm run build && node dist/server"
   },
   "author": "",
   "license": "ISC",
