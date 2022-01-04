@@ -19,7 +19,7 @@ export default {
   },
   Subscription: {
     productAdded: {
-      subscribe: (parent, args) => pubsub.asyncIterator("PRODUCT_ADDED"),
+      subscribe: () => pubsub.asyncIterator("PRODUCT_ADDED"),
     },
   },
 };
