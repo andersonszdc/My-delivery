@@ -117,7 +117,7 @@ const ItemModal = ({ item, setIsClicked }: any) => {
   const { setState } = useContext(OrderContext);
   const [number, setNumber] = useState(1);
 
-  const closeModal = () => {
+  const CloseModal = () => {
     setIsClicked(false);
   };
 
@@ -153,7 +153,7 @@ const ItemModal = ({ item, setIsClicked }: any) => {
   return (
     <Wrapper onClick={OutsideClick}>
       <Content>
-        <div className="btn-close" >
+        <div className="btn-close" onClick={CloseModal} >
           <Image alt="icon" src={CancelIcon} />
         </div>
         <div className="image">
