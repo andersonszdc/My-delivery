@@ -29,15 +29,20 @@ const Wrapper = styled.div`
   }
 
   .item-name {
+    grid-area: name;
     font-size: 20px;
     font-weight: 400;
-    grid-area: name;
   }
 
   .item-description {
+    grid-area: description;
     font-size: 16px;
     font-weight: 400;
-    grid-area: description;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    height: 40px;
   }
 
   .item-image {
@@ -54,7 +59,7 @@ const Wrapper = styled.div`
 const DefaultItem = {
   name: 'Mussarela',
   price: 5.0,
-  description: 'Feita com recheio cremoso de uma mistura de chocolates...',
+  description: 'Feita com recheio cremoso de uma mistura de chocolates belgas e trufados com cobetura',
 };
 
 const Item = ({ item }: any) => {
