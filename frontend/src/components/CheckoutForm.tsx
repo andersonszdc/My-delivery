@@ -153,7 +153,7 @@ const Index = () => {
     const { error } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: `${process.env.NEXT_PUBLIC_API_URL}/sucess`,
+        return_url: `${window.location.origin}/sucess`,
       },
     });
 
