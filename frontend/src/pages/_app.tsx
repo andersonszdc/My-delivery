@@ -21,7 +21,7 @@ const httpLink = new HttpLink({
 })
 
 const wsLink = typeof window !== 'undefined' ? new WebSocketLink({
-  uri: `ws://${process.env.NEXT_PUBLIC_PATH}`,
+  uri: `wss://${process.env.NEXT_PUBLIC_PATH}`,
   options: {
     reconnect: true
   },
