@@ -1,4 +1,6 @@
 import dotenv from "dotenv";
+dotenv.config();
+
 import "reflect-metadata";
 import { SubscriptionServer } from "subscriptions-transport-ws";
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -9,8 +11,6 @@ import typeDefs from "./graphql/typeDefs";
 import express from "express";
 import http from "http";
 import "./database";
-
-dotenv.config();
 
 (async () => {
   const app = express();
@@ -48,7 +48,7 @@ dotenv.config();
   await server.start();
   server.applyMiddleware({ app });
 
-  httpServer.listen(process.env.PORT || 3000, () =>
+  httpServer.listen(process.env.PORT || 4000, () =>
     console.log(`Server is now running on http://localhost:4000/graphql`)
   );
 })();
