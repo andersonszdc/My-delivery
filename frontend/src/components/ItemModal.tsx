@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
-import pizza from '../assets/pizza.png';
+import pizza from '../assets/pizza2.jpg';
 import CurrencyConversion from '../functions/CurrencyConversion';
 import OrderContext from '../contexts/OrderContext';
 import RemoveIcon from '../assets/remove.svg';
@@ -21,11 +21,14 @@ const Wrapper = styled.div`
 `;
 
 const Content = styled.div`
-  display: flex;
-  gap: 16px;
-  background-color: #fff;
   position: relative;
-  padding: 8px 16px;
+  display: grid;
+  grid-template:
+    'image header' 54px
+    'image scrolling' auto
+    'image action' 74px
+    / 1fr 1fr;
+  background-color: #fff;
   border-radius: 8px;
 
   .btn-close {
@@ -35,7 +38,12 @@ const Content = styled.div`
   }
 
   .image {
-    width: 500px;
+    padding: 16px;
+    width: 100%;
+    grid-area: image;
+    span {
+      border-radius: 8px;
+    }
   }
 
   .item {
@@ -48,10 +56,60 @@ const Content = styled.div`
     font-size: 20px;
     font-weight: 400;
   }
+`;
+
+const Action = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  padding: 16px;
+  grid-area: action;
+
+  .controller {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    border: 1px solid #f2f2f2;
+    border-radius: 4px;
+    padding: 8px;
+    width: max-content;
+  }
+
+  .controller-btn {
+    cursor: pointer;
+  }
+
+  .btn-add {
+    display: flex;
+    width: 300px;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    color: #ffffff;
+    background-color: #ff7a00;
+    border-radius: 4px;
+    border: none;
+    padding: 8px 24px;
+    font-family: 'Roboto';
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+`;
+
+const Scrolling = styled.div`
+  grid-area: scrolling;
+  padding: 16px;
+  max-width: 45vw;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
   .item-description {
     font-size: 16px;
     font-weight: 400;
+    line-clamp: 2;
   }
 
   .item-price {
@@ -75,49 +133,19 @@ const Content = styled.div`
     height: 100px;
     resize: none;
     border-radius: 4px;
-    border-color: #F2F2F2;
-    color: #BCBCBC;
+    border-color: #f2f2f2;
+    color: #bcbcbc;
     :focus {
-      outline: .5px solid #ff7b00;
+      outline: 0.5px solid #ff7b00;
     }
   }
 `;
 
-const AddItem = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 24px;
-
-  .controller {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-    border: 1px solid #f2f2f2;
-    border-radius: 4px;
-    padding: 8px;
-    width: max-content;
-  }
-
-  .controller-btn {
-    cursor: pointer;
-  }
-
-  .btn-add {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    color: #ffffff;
-    background-color: #ff7a00;
-    border-radius: 4px;
-    border: none;
-    padding: 8px 24px;
-    font-family: "Roboto";
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-  }
+const Header = styled.div`
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
 `;
 
 const ItemModal = ({ item, setIsClicked }: any) => {
@@ -160,14 +188,16 @@ const ItemModal = ({ item, setIsClicked }: any) => {
   return (
     <Wrapper onClick={OutsideClick}>
       <Content>
-        <div className="btn-close" onClick={CloseModal} >
-          <Image alt="icon" src={CancelIcon} />
-        </div>
         <div className="image">
-            <Image alt="" layout="responsive" src={pizza} />
+          <Image alt="" layout="responsive" src={pizza} />
         </div>
-        <div className="item">
+        <Header>
           <h2 className="item-name">{item.name}</h2>
+          <div className="btn-close" onClick={CloseModal}>
+            <Image alt="icon" src={CancelIcon} />
+          </div>
+        </Header>
+        <Scrolling>
           <p className="item-description">{item.description}</p>
           <p className="item-price">{CurrencyConversion(item.price)}</p>
           <div>
@@ -177,18 +207,28 @@ const ItemModal = ({ item, setIsClicked }: any) => {
               placeholder="ex.: tirar a cebola, maionese à parte etc..."
             />
           </div>
-          <AddItem>
-            <div className="controller">
-              <Image className="controller-btn" onClick={Decrement} alt="icon" src={RemoveIcon} />
-              <span>{number}</span>
-              <Image className="controller-btn" onClick={Increment} alt="icon" src={PlusIcon} />
-            </div>
-            <button onClick={AddOrder} className="btn-add">
-              <span>Adicionar</span>
-              <span>{CurrencyConversion(number * item.price)}</span>
-            </button>
-          </AddItem>
-        </div>
+        </Scrolling>
+        <Action>
+          <div className="controller">
+            <Image
+              className="controller-btn"
+              onClick={Decrement}
+              alt="icon"
+              src={RemoveIcon}
+            />
+            <span>{number}</span>
+            <Image
+              className="controller-btn"
+              onClick={Increment}
+              alt="icon"
+              src={PlusIcon}
+            />
+          </div>
+          <button onClick={AddOrder} className="btn-add">
+            <span>Adicionar</span>
+            <span>{CurrencyConversion(number * item.price)}</span>
+          </button>
+        </Action>
       </Content>
     </Wrapper>
   );

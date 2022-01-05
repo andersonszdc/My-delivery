@@ -20,6 +20,9 @@ const Wrapper = styled.div`
     display: flex;
     gap: 24px;
   }
+  .navbar-icon {
+    cursor: pointer;
+  }
 `;
 
 const Index: React.FC = () => {
@@ -48,9 +51,9 @@ const Index: React.FC = () => {
         <div>{'Estr. São Pedro de Alcântara, 446'}</div>
       </div>
       <div className="navbar">
-        <Image alt="icon" src={accountIcon} />
-        <Image onClick={openModal} alt="icon" src={bagIcon} />
-        <Image alt="icon" src={logoutIcon} />
+        <Image className='navbar-icon' alt="icon" src={accountIcon} />
+        <Image className='navbar-icon' onClick={openModal} alt="icon" src={bagIcon} />
+        <Image className='navbar-icon' alt="icon" src={logoutIcon} />
       </div>
     </Wrapper>
 
