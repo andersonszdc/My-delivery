@@ -34,12 +34,12 @@ const SendButton = styled.button`
   border: none;
   font-weight: 700;
   color: #ffffff;
-  border-radius: 12px;
+  border-radius: 4px;
   width: 100%;
   cursor: pointer;
   padding: 12px;
   font-size: 16px;
-  font-family: 'Quicksand';
+  font-family: 'Roboto';
 
   :hover {
     filter: contrast(115%);
@@ -102,7 +102,7 @@ const Spinner = styled.div`
   }
 `;
 
-const PaymentForm = () => {
+const Index = () => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -157,10 +157,8 @@ const PaymentForm = () => {
       },
     });
 
-    if (error.type === 'card_error' || error.type === 'validation_error') {
+    if (error.type) {
       setMessage(error.message!);
-    } else {
-      setMessage('An unexpected error occured.');
     }
 
     setIsLoading(false);
@@ -177,4 +175,4 @@ const PaymentForm = () => {
   );
 };
 
-export default PaymentForm;
+export default Index;
