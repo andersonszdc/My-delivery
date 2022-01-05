@@ -77,6 +77,9 @@ const Content = styled.div`
     border-radius: 4px;
     border-color: #F2F2F2;
     color: #BCBCBC;
+    :focus {
+      outline: .5px solid #ff7b00;
+    }
   }
 `;
 
@@ -94,6 +97,10 @@ const AddItem = styled.div`
     border-radius: 4px;
     padding: 8px;
     width: max-content;
+  }
+
+  .controller-btn {
+    cursor: pointer;
   }
 
   .btn-add {
@@ -172,9 +179,9 @@ const ItemModal = ({ item, setIsClicked }: any) => {
           </div>
           <AddItem>
             <div className="controller">
-              <Image onClick={Decrement} alt="icon" src={RemoveIcon} />
+              <Image className="controller-btn" onClick={Decrement} alt="icon" src={RemoveIcon} />
               <span>{number}</span>
-              <Image onClick={Increment} alt="icon" src={PlusIcon} />
+              <Image className="controller-btn" onClick={Increment} alt="icon" src={PlusIcon} />
             </div>
             <button onClick={AddOrder} className="btn-add">
               <span>Adicionar</span>

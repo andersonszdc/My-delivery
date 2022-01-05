@@ -2,10 +2,11 @@ import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
-import Portal from '../HOC/Portal';
 import CurrencyConversion from '../functions/CurrencyConversion';
-import DeleteModal from './DeleteModal';
-import MobileCartBar from './MobileCartBar';
+import RemoveIcon from '../assets/remove.svg';
+import PlusIcon from '../assets/plus.svg';
+import CancelIcon from '../assets/cancel.svg';
+import Image from 'next/image';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -16,22 +17,22 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   justify-content: right;
-`
+`;
 
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
   width: 400px;
-  background-color: #FFF;
+  background-color: #fff;
   height: 100%;
   padding: 32px;
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 
   .cart-label {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 20px;
+    font-weight: 400;
   }
 
   .cart-items {
@@ -41,28 +42,28 @@ const Content = styled.div`
     display: grid;
     row-gap: 12px;
     grid-template-columns: 1fr 1fr;
-    font-weight: 700;
-    font-size: 12px;
+    font-weight: 300;
+    font-size: 16px;
   }
 
   .cart-value {
     color: #ff7a00;
     text-align: right;
-    font-weight: 600;
-    font-size: 12px;
+    font-weight: 300;
+    font-size: 16px;
   }
 
   .cart-btn {
-    border-radius: 12px;
+    border-radius: 4px;
     background-color: #ff7a00;
     color: #ffffff;
-    padding: 8px 24px;
+    padding: 12px;
     grid-column: 1/3;
     border: none;
     cursor: pointer;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    font-size: 12px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
   }
 
   @media (max-width: 650px) {
@@ -75,17 +76,18 @@ const Item = styled.div`
   grid-template-columns: repeat(3, 1fr);
 
   .item {
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 16px;
+    font-weight: 300;
   }
 
   .controller {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 16px;
   }
 
-  .btn-mount {
+  .controller-btn {
     display: flex;
     align-items: center;
     cursor: pointer;
@@ -93,10 +95,11 @@ const Item = styled.div`
 
   .item-mount {
     font-size: 16px;
-    font-weight: 700;
+    font-weight: 500;
   }
 
   .price {
+    font-weight: 400;
     text-align: right;
   }
 `;
@@ -144,10 +147,10 @@ const Cart = ({ setIsOpenModal }: any) => {
   };
 
   const CloseModal = (e: any) => {
-    if (e.target.className.includes("Wrapper")) {
-      setIsOpenModal(false)
+    if (e.target.className.includes('Wrapper')) {
+      setIsOpenModal(false);
     }
-  }
+  };
 
   return (
     <Wrapper onClick={CloseModal}>
@@ -158,47 +161,21 @@ const Cart = ({ setIsOpenModal }: any) => {
             state.products.map((item: any, index: any) => (
               <Item key={index}>
                 <p className="item">{item.name}</p>
-                  <div className="controller">
-                    <span
-                      className="btn-mount"
-                      onClick={() => Decrement(index)}
-                    >
-                      <svg
-                        width="10"
-                        height="3"
-                        viewBox="0 0 10 3"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M9 1.5H5H1"
-                          stroke="black"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                    <span className="item-mount">{item.mount}</span>
-                    <span
-                      className="btn-mount"
-                      onClick={() => Increment(index)}
-                    >
-                      <svg
-                        width="10"
-                        height="11"
-                        viewBox="0 0 10 11"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M5 9.5V5.5M5 5.5V1.5M5 5.5H9M5 5.5H1"
-                          stroke="black"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                    </span>
-                  </div>
+                <div className="controller">
+                  <Image
+                    alt="icon"
+                    className="controller-btn"
+                    onClick={() => Decrement(index)}
+                    src={RemoveIcon}
+                  />
+                  <span className="item-mount">{item.mount}</span>
+                  <Image
+                    alt="icon"
+                    className="controller-btn"
+                    onClick={() => Increment(index)}
+                    src={PlusIcon}
+                  />
+                </div>
                 <p className="item price">
                   {CurrencyConversion(item.price * item.mount)}
                 </p>
@@ -209,15 +186,15 @@ const Cart = ({ setIsOpenModal }: any) => {
           )}
         </div>
         <div className="cart-info">
-          <p>Subtotal: </p>
+          <p>Subtotal</p>
           <p className="cart-value">{CurrencyConversion(state.total)}</p>
-          <p>Taxa de entrega: </p>
+          <p>Taxa de entrega</p>
           <p className="cart-value">R$ 5,00</p>
-          <p>Total: </p>
+          <p>Total</p>
           <p className="cart-value">{CurrencyConversion(state.total + 5)}</p>
-            <button onClick={GoToCheckout} className="cart-btn">
-              Realizar pagamento
-            </button>
+          <button onClick={GoToCheckout} className="cart-btn">
+            Realizar pagamento
+          </button>
           {message && <p>{message}</p>}
         </div>
       </Content>
