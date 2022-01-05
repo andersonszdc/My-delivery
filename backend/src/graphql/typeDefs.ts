@@ -3,6 +3,7 @@ import { mergeTypeDefs } from "@graphql-tools/merge";
 import { loadFilesSync } from "@graphql-tools/load-files";
 import { gql } from "apollo-server-express";
 import productSchema from "./modules/products/schema";
+import paymentIntentSchema from "./modules/paymentIntent/schema";
 
 // const typesArray = loadFilesSync(
 //   path.join(__dirname, "modules", "**", "*.gql")
@@ -16,4 +17,4 @@ const gqlWrapper = (...files: string[]) => {
   `;
 };
 
-export default gqlWrapper(productSchema);
+export default gqlWrapper(productSchema, paymentIntentSchema);
