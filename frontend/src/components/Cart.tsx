@@ -30,42 +30,6 @@ const Content = styled.div`
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 
-  .cart-label {
-    font-size: 20px;
-    font-weight: 400;
-  }
-
-  .cart-items {
-  }
-
-  .cart-info {
-    display: grid;
-    row-gap: 12px;
-    grid-template-columns: 1fr 1fr;
-    font-weight: 300;
-    font-size: 16px;
-  }
-
-  .cart-value {
-    color: #ff7a00;
-    text-align: right;
-    font-weight: 300;
-    font-size: 16px;
-  }
-
-  .cart-btn {
-    border-radius: 4px;
-    background-color: #ff7a00;
-    color: #ffffff;
-    padding: 12px;
-    grid-column: 1/3;
-    border: none;
-    cursor: pointer;
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    font-size: 16px;
-  }
-
   @media (max-width: 650px) {
     display: none;
   }
@@ -101,6 +65,48 @@ const Item = styled.div`
   .price {
     font-weight: 400;
     text-align: right;
+  }
+`;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  .cart-label {
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .btn-close {
+    cursor: pointer;
+  }
+`;
+
+const Action = styled.div`
+  display: grid;
+  row-gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  font-weight: 300;
+  font-size: 16px;
+
+  .cart-value {
+    color: #ff7a00;
+    text-align: right;
+    font-weight: 300;
+    font-size: 16px;
+  }
+
+  .cart-btn {
+    border-radius: 4px;
+    background-color: #ff7a00;
+    color: #ffffff;
+    padding: 12px;
+    grid-column: 1/3;
+    border: none;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
   }
 `;
 
@@ -155,48 +161,57 @@ const Cart = ({ setIsOpenModal }: any) => {
   return (
     <Wrapper onClick={CloseModal}>
       <Content>
-        <h2 className="cart-label">Seu pedido</h2>
-        <div className="cart-items">
-          {state.products.length !== 0 ? (
-            state.products.map((item: any, index: any) => (
-              <Item key={index}>
-                <p className="item">{item.name}</p>
-                <div className="controller">
-                  <Image
-                    alt="icon"
-                    className="controller-btn"
-                    onClick={() => Decrement(index)}
-                    src={RemoveIcon}
-                  />
-                  <span className="item-mount">{item.mount}</span>
-                  <Image
-                    alt="icon"
-                    className="controller-btn"
-                    onClick={() => Increment(index)}
-                    src={PlusIcon}
-                  />
-                </div>
-                <p className="item price">
-                  {CurrencyConversion(item.price * item.mount)}
-                </p>
-              </Item>
-            ))
-          ) : (
-            <div>sem itens</div>
-          )}
-        </div>
-        <div className="cart-info">
-          <p>Subtotal</p>
-          <p className="cart-value">{CurrencyConversion(state.total)}</p>
-          <p>Taxa de entrega</p>
-          <p className="cart-value">R$ 5,00</p>
-          <p>Total</p>
-          <p className="cart-value">{CurrencyConversion(state.total + 5)}</p>
-          <button onClick={GoToCheckout} className="cart-btn">
-            Realizar pagamento
-          </button>
-          {message && <p>{message}</p>}
-        </div>
+        <Header>
+          <h2 className="cart-label">Seu pedido</h2>
+          <div className="btn-close" onClick={() => setIsOpenModal(false)}>
+            <Image alt="icon" src={CancelIcon} />
+          </div>
+        </Header>
+        {state.total != 0 ? (
+          <>
+            <div className="cart-items">
+              {state.products.map((item: any, index: any) => (
+                <Item key={index}>
+                  <p className="item">{item.name}</p>
+                  <div className="controller">
+                    <Image
+                      alt="icon"
+                      className="controller-btn"
+                      onClick={() => Decrement(index)}
+                      src={RemoveIcon}
+                    />
+                    <span className="item-mount">{item.mount}</span>
+                    <Image
+                      alt="icon"
+                      className="controller-btn"
+                      onClick={() => Increment(index)}
+                      src={PlusIcon}
+                    />
+                  </div>
+                  <p className="item price">
+                    {CurrencyConversion(item.price * item.mount)}
+                  </p>
+                </Item>
+              ))}
+            </div>
+            <Action>
+              <p>Subtotal</p>
+              <p className="cart-value">{CurrencyConversion(state.total)}</p>
+              <p>Taxa de entrega</p>
+              <p className="cart-value">R$ 5,00</p>
+              <p>Total</p>
+              <p className="cart-value">
+                {CurrencyConversion(state.total + 5)}
+              </p>
+              <button onClick={GoToCheckout} className="cart-btn">
+                Realizar pagamento
+              </button>
+              {message && <p>{message}</p>}
+            </Action>
+          </>
+        ) : (
+          <div>Sua sacola está vazia :(</div>
+        )}
       </Content>
     </Wrapper>
   );

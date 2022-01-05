@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import pizza from '../assets/pizza.png';
+import pizza from '../assets/pizza2.jpg';
 import styled from 'styled-components';
 import Portal from '../HOC/Portal';
 import ItemModal from './ItemModal';
@@ -47,6 +47,9 @@ const Wrapper = styled.div`
 
   .item-image {
     grid-area: image;
+    span {
+      border-radius: 8px;
+    }
   }
 
   .price {
