@@ -17,11 +17,11 @@ type Props = AppProps & {
 };
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql'
+  uri: `https://${process.env.NEXT_PUBLIC_PATH}`
 })
 
 const wsLink = typeof window !== 'undefined' ? new WebSocketLink({
-  uri: 'ws://localhost:4000/graphql',
+  uri: `ws://${process.env.NEXT_PUBLIC_PATH}`,
   options: {
     reconnect: true
   },
