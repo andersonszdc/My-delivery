@@ -102,7 +102,7 @@ const Spinner = styled.div`
   }
 `;
 
-const Index = () => {
+const Index = ({clientSecret}: any) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -113,9 +113,6 @@ const Index = () => {
     if (!stripe) {
       return;
     }
-    const clientSecret = new URLSearchParams(window.location.search).get(
-      'payment_intent_client_secret'
-    );
 
     if (!clientSecret) {
       return;
@@ -139,7 +136,7 @@ const Index = () => {
             break;
         }
       });
-  }, [stripe]);
+  }, [clientSecret, stripe]);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
