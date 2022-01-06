@@ -25,7 +25,8 @@ const Wrapper = styled.div`
     grid-template:
       'name image' auto
       'description image' auto
-      / auto auto;
+      / 4fr 3fr;
+    column-gap: 16px;
   }
 
   .item-name {
@@ -59,15 +60,8 @@ const Wrapper = styled.div`
   }
 `;
 
-const DefaultItem = {
-  name: 'Mussarela',
-  price: 5.0,
-  description: 'Feita com recheio cremoso de uma mistura de chocolates belgas e trufados com cobetura',
-};
-
-const Item = ({ item }: any) => {
+const Index = ({ item }: any) => {
   const [isClicked, setIsClicked] = useState(false);
-  const [item2, setItem] = useState(DefaultItem);
 
   const openModal = () => {
     setIsClicked(true);
@@ -78,21 +72,21 @@ const Item = ({ item }: any) => {
       <Wrapper onClick={openModal}>
         <div className="item">
           <h2 className="item-name">{item.name}</h2>
-          <h2 className="item-description">{item2.description}</h2>
+          <h2 className="item-description">{item.description}</h2>
           <div className="item-image">
             <Image src={pizza} alt="" />
           </div>
         </div>
-        <h2 className="price">{CurrencyConversion(item2.price)}</h2>
+        <h2 className="price">{CurrencyConversion(item.price)}</h2>
       </Wrapper>
 
       {isClicked && (
         <Portal modal="itemModal">
-          <ItemModal item={DefaultItem} setIsClicked={setIsClicked} />
+          <ItemModal item={item} setIsClicked={setIsClicked} />
         </Portal>
       )}
     </>
   );
 };
 
-export default Item;
+export default Index;

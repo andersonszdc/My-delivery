@@ -1,9 +1,5 @@
-import { GetStaticProps } from 'next';
-import Head from 'next/head';
 import styled from 'styled-components';
-import Cart from '../components/Cart';
 import Layout from '../components/Layout';
-import Menu from '../components/Menu';
 import { useQuery, gql } from '@apollo/client';
 import { useSubscription } from '@apollo/client';
 import Item from '../components/Item';
@@ -29,6 +25,8 @@ const PRODUCTS = gql`
   query Products {
     products {
       name
+      description
+      price
     }
   }
 `;
@@ -44,8 +42,6 @@ const PRODUCT_ADDED = gql`
 const Home = () => {
   const { loading, error, data } = useQuery(PRODUCTS);
   // const added = useSubscription(PRODUCT_ADDED);
-
-  data && console.log(data.products);
 
   if (loading) return <div>loading</div>;
 
