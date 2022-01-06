@@ -7,6 +7,7 @@ import RemoveIcon from '../assets/remove.svg';
 import PlusIcon from '../assets/plus.svg';
 import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
+import ItemCart from './ItemCart';
 
 const Wrapper = styled.div`
   position: fixed;
@@ -170,28 +171,8 @@ const Cart = ({ setIsOpenModal }: any) => {
         {state.total != 0 ? (
           <>
             <div className="cart-items">
-              {state.products.map((item: any, index: any) => (
-                <Item key={index}>
-                  <p className="item">{item.name}</p>
-                  <div className="controller">
-                    <Image
-                      alt="icon"
-                      className="controller-btn"
-                      onClick={() => Decrement(index)}
-                      src={RemoveIcon}
-                    />
-                    <span className="item-mount">{item.mount}</span>
-                    <Image
-                      alt="icon"
-                      className="controller-btn"
-                      onClick={() => Increment(index)}
-                      src={PlusIcon}
-                    />
-                  </div>
-                  <p className="item price">
-                    {CurrencyConversion(item.price * item.mount)}
-                  </p>
-                </Item>
+              {state.products.map((item: any, index: number) => (
+                <ItemCart key={index} index={index} item={item} />
               ))}
             </div>
             <Action>

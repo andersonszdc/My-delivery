@@ -37,7 +37,7 @@ const Content = styled.div`
     padding: 8px 24px;
     border-radius: 8px;
     border: none;
-    font-family: 'Quicksand';
+    font-family: 'Roboto';
     font-weight: 600;
     font-size: 16px;
     cursor: pointer;
@@ -53,7 +53,12 @@ const Content = styled.div`
   }
 `;
 
-const DeleteModal = ({ index, close }: any) => {
+type IndexProps = {
+  index: number
+  close: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+const Index = ({ index, close }: IndexProps) => {
   const { state, setState } = useContext(OrderContext);
 
   const handleYes = () => {
@@ -96,4 +101,4 @@ const DeleteModal = ({ index, close }: any) => {
   );
 };
 
-export default DeleteModal;
+export default Index;

@@ -60,6 +60,10 @@ const Wrapper = styled.div`
   }
 `;
 
+type IndexProps<T> = {
+  item: T
+}
+
 const Index = ({ item }: any) => {
   const [isClicked, setIsClicked] = useState(false);
 
