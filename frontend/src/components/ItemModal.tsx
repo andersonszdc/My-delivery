@@ -20,7 +20,11 @@ const Wrapper = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
 `;
 
-const Content = styled.div`
+type ContentProps = {
+  openModal: boolean
+}
+
+const Content = styled.div<ContentProps>`
   position: relative;
   display: grid;
   grid-template:
@@ -30,6 +34,14 @@ const Content = styled.div`
     / 1fr 1fr;
   background-color: #fff;
   border-radius: 8px;
+  transform: translateY(50%);
+  opacity: 0;
+  transition: .3s ease-in-out;
+  
+  ${props => props.openModal && `
+    transform: translateY(0%);
+    opacity: 1;
+  `}
 
   .btn-close {
     position: absolute;
@@ -148,9 +160,19 @@ const Header = styled.div`
   padding: 16px;
 `;
 
-const ItemModal = ({ item, setIsClicked }: any) => {
+interface IndexProps {
+  item: any;
+  setIsClicked: (arg0: boolean) => void;
+}
+
+const Index = ({ item, setIsClicked }: IndexProps) => {
   const { setState } = useContext(OrderContext);
   const [number, setNumber] = useState(1);
+  const [openModal, setOpenModal] = useState(false);
+
+  useEffect(() => {
+    setOpenModal(true)
+  },[])
 
   const Increment = () => {
     setNumber((number) => number + 1);
@@ -183,7 +205,7 @@ const ItemModal = ({ item, setIsClicked }: any) => {
 
   return (
     <Wrapper onClick={OutsideClick}>
-      <Content>
+      <Content openModal={openModal}>
         <div className="image">
           <Image alt="" layout="responsive" src={pizza} />
         </div>
@@ -230,4 +252,4 @@ const ItemModal = ({ item, setIsClicked }: any) => {
   );
 };
 
-export default ItemModal;
+export default Index;
