@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
 import CurrencyConversion from '../functions/CurrencyConversion';
@@ -7,15 +7,25 @@ import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
 import ItemCart from './ItemCart';
 
-const Wrapper = styled.div`
+interface WrapperProps {
+  openCart: boolean;
+}
+
+const Wrapper = styled.div<WrapperProps>`
   position: fixed;
-  right: 0;
+  right: -400px;
   top: 0;
-  background-color: rgba(0, 0, 0, 0.2);
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: right;
+  transition: 0.5s ease-in-out;
+
+  ${(props) =>
+    props.openCart &&
+    `
+    right: 0px;
+  `}
 `;
 
 const Content = styled.div`
@@ -24,6 +34,7 @@ const Content = styled.div`
   gap: 12px;
   width: 400px;
   background-color: #fff;
+  box-shadow: 0 0 10px rgb(0 0 0 / 10%);
   height: 100%;
   padding: 32px;
   border-top-left-radius: 8px;
@@ -91,7 +102,11 @@ const Cart = ({ setIsOpenModal }: any) => {
   const { state, setState } = useContext(OrderContext);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [indexDelete, setIndexDelete] = useState(0);
-  const [message, setMessage] = useState('');
+  const [openCart, setOpenCart] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => setOpenCart(true), 1);
+  }, []);
 
   const Decrement = (index: number) => {
     const newProducts = state.products.map((item: any, newIndex: any) =>
@@ -120,26 +135,23 @@ const Cart = ({ setIsOpenModal }: any) => {
     }));
   };
 
-  const GoToCheckout = () => {
-    if (state.total <= 0) {
-      setMessage('Seu carrinho está vazio!');
-    } else {
-      route.push('/checkout');
-    }
+  const closeModal = () => {
+    setOpenCart(false);
+    setTimeout(() => setIsOpenModal(false), 500);
   };
 
-  const CloseModal = (e: any) => {
+  const clickOut = (e: any) => {
     if (e.target.className.includes('Wrapper')) {
-      setIsOpenModal(false);
+      closeModal();
     }
   };
 
   return (
-    <Wrapper onClick={CloseModal}>
+    <Wrapper openCart={openCart} onClick={clickOut}>
       <Content>
         <Header>
           <h2 className="cart-label">Seu pedido</h2>
-          <div className="btn-close" onClick={() => setIsOpenModal(false)}>
+          <div className="btn-close" onClick={closeModal}>
             <Image alt="icon" src={CancelIcon} />
           </div>
         </Header>
@@ -161,10 +173,12 @@ const Cart = ({ setIsOpenModal }: any) => {
                 {CurrencyConversion(state.total + 5)}
               </p>
               <hr className="divider-solid hr-grid-column" />
-              <button onClick={GoToCheckout} className="cart__btn">
+              <button
+                onClick={() => route.push('/checkout')}
+                className="cart__btn"
+              >
                 Realizar pagamento
               </button>
-              {message && <p>{message}</p>}
             </Action>
           </>
         ) : (
