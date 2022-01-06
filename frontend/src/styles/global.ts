@@ -13,4 +13,9 @@ export default createGlobalStyle`
         margin: 30px auto;
         padding: 0 32px;
     }
+
+    .divider-solid {
+        border-top: 1px solid #F2F2F2;
+        border-radius: 1px;
+    }
 `;

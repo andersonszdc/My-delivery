@@ -152,10 +152,6 @@ const ItemModal = ({ item, setIsClicked }: any) => {
   const { setState } = useContext(OrderContext);
   const [number, setNumber] = useState(1);
 
-  const CloseModal = () => {
-    setIsClicked(false);
-  };
-
   const Increment = () => {
     setNumber((number) => number + 1);
   };
@@ -193,7 +189,7 @@ const ItemModal = ({ item, setIsClicked }: any) => {
         </div>
         <Header>
           <h2 className="item-name">{item.name}</h2>
-          <div className="btn-close" onClick={CloseModal}>
+          <div className="btn-close" onClick={() => setIsClicked(false)}>
             <Image alt="icon" src={CancelIcon} />
           </div>
         </Header>

@@ -3,8 +3,6 @@ import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
 import CurrencyConversion from '../functions/CurrencyConversion';
-import RemoveIcon from '../assets/remove.svg';
-import PlusIcon from '../assets/plus.svg';
 import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
 import ItemCart from './ItemCart';
@@ -31,41 +29,10 @@ const Content = styled.div`
   border-top-left-radius: 8px;
   border-bottom-left-radius: 8px;
 
-  @media (max-width: 650px) {
-    display: none;
-  }
-`;
-
-const Item = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-
-  .item {
-    font-size: 16px;
-    font-weight: 300;
-  }
-
-  .controller {
+  .cart__items {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .controller-btn {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-  }
-
-  .item-mount {
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .price {
-    font-weight: 400;
-    text-align: right;
+    flex-direction: column;
+    gap: 12px;
   }
 `;
 
@@ -170,7 +137,8 @@ const Cart = ({ setIsOpenModal }: any) => {
         </Header>
         {state.total != 0 ? (
           <>
-            <div className="cart-items">
+            <hr className="divider-solid" />
+            <div className="cart__items">
               {state.products.map((item: any, index: number) => (
                 <ItemCart key={index} index={index} item={item} />
               ))}

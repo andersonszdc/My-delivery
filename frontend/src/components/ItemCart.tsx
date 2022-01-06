@@ -1,42 +1,40 @@
 import React, { useContext, useState } from 'react';
-import Image from 'next/image';
 import OrderContext from '../contexts/OrderContext';
-import RemoveIcon from '../assets/remove.svg';
-import PlusIcon from '../assets/plus.svg';
 import CurrencyConversion from '../functions/CurrencyConversion';
 import styled from 'styled-components';
 import DeleteModal from './DeleteModal';
+import ItemModal from './ItemModal';
 
 const Wrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   .item {
-    font-size: 16px;
-    font-weight: 300;
+    display: flex;
+    justify-content: space-between;
   }
 
-  .controller {
+  .action {
     display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 16px;
   }
 
-  .controller-btn {
-    display: flex;
-    align-items: center;
+  .action__btn {
+    background-color: transparent;
+    border: none;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
     cursor: pointer;
   }
 
-  .item-mount {
-    font-size: 16px;
-    font-weight: 500;
+  .action__btn-edit {
+    color: #fca311;
   }
 
-  .price {
-    font-weight: 400;
-    text-align: right;
+  .action__btn-remove {
+    color: #979797;
   }
 `;
 
@@ -49,61 +47,42 @@ const Index = ({ item, index }: IndexProps) => {
   const { state, setState } = useContext(OrderContext);
 
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [indexDelete, setIndexDelete] = useState(0);
-
-  const Increment = (index: number) => {
-    const newProducts = state.products.map((item: any, newIndex: any) =>
-      index == newIndex ? { ...item, mount: item.mount + 1 } : item
-    );
-    setState((s) => ({
-      ...s,
-      products: newProducts,
-      total: s.total + s.products[index].price,
-    }));
-  };
-
-  const Decrement = (index: number) => {
-    const newProducts = state.products.map((item: any, newIndex: any) =>
-      item.mount > 1 && index == newIndex
-        ? { ...item, mount: item.mount - 1 }
-        : item
-    );
-    state.products[index].mount > 1 &&
-      setState((s) => ({
-        ...s,
-        products: newProducts,
-        total: s.total - s.products[index].price,
-      }));
-    setIndexDelete(index);
-    state.products[index].mount == 1 && setIsOpenDeleteModal(true);
-  };
+  const [isOpenItemModal, setIsOpenItemModal] = useState(false);
 
   return (
     <>
       <Wrapper>
-        <p className="item">{item.name}</p>
-        <div className="controller">
-          <Image
-            alt="icon"
-            className="controller-btn"
-            onClick={() => Decrement(index)}
-            src={RemoveIcon}
-          />
-          <span className="item-mount">{item.mount}</span>
-          <Image
-            alt="icon"
-            className="controller-btn"
-            onClick={() => Increment(index)}
-            src={PlusIcon}
-          />
+        <div className="item">
+          <p className="item__name">
+            {item.mount}x {item.name}
+          </p>
+          <p className="item__price">
+            {CurrencyConversion(item.price * item.mount)}
+          </p>
         </div>
-        <p className="item price">
-          {CurrencyConversion(item.price * item.mount)}
-        </p>
+        <div className="action">
+          <button
+            onClick={() => setIsOpenItemModal(true)}
+            className="action__btn action__btn-edit"
+          >
+            Editar
+          </button>
+          <button
+            onClick={() => setIsOpenDeleteModal(true)}
+            className="action__btn action__btn-remove"
+          >
+            Remover
+          </button>
+        </div>
+        <hr className="divider-solid" />
       </Wrapper>
 
+      {isOpenItemModal && (
+        <ItemModal item={item} setIsClicked={setIsOpenItemModal} />
+      )}
+
       {isOpenDeleteModal && (
-          <DeleteModal index={index} close={setIsOpenDeleteModal} />
+        <DeleteModal index={index} close={setIsOpenDeleteModal} />
       )}
     </>
   );
