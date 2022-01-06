@@ -57,14 +57,22 @@ const Action = styled.div`
   font-weight: 300;
   font-size: 16px;
 
-  .cart-value {
+  .cart__value {
     color: #ff7a00;
     text-align: right;
     font-weight: 300;
     font-size: 16px;
   }
 
-  .cart-btn {
+  .bold {
+    font-weight: 400;
+  }
+
+  .hr-grid-column {
+    grid-column: 1/3;
+  }
+
+  .cart__btn {
     border-radius: 4px;
     background-color: #ff7a00;
     color: #ffffff;
@@ -145,14 +153,15 @@ const Cart = ({ setIsOpenModal }: any) => {
             </div>
             <Action>
               <p>Subtotal</p>
-              <p className="cart-value">{CurrencyConversion(state.total)}</p>
+              <p className="cart__value">{CurrencyConversion(state.total)}</p>
               <p>Taxa de entrega</p>
-              <p className="cart-value">R$ 5,00</p>
-              <p>Total</p>
-              <p className="cart-value">
+              <p className="cart__value">R$ 5,00</p>
+              <p className="cart__total bold">Total</p>
+              <p className="cart__value bold">
                 {CurrencyConversion(state.total + 5)}
               </p>
-              <button onClick={GoToCheckout} className="cart-btn">
+              <hr className="divider-solid hr-grid-column" />
+              <button onClick={GoToCheckout} className="cart__btn">
                 Realizar pagamento
               </button>
               {message && <p>{message}</p>}
