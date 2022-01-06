@@ -1,6 +1,8 @@
-export default `type Product {
+export default `
+type Product {
   name: String
   description: String
+  price: Float
 }
 
 type Query {
@@ -8,8 +10,8 @@ type Query {
 }
 
 type Mutation {
-  addProduct(name: String, description: String): Product
-  updateProduct(id: String, name: String, description: String): Product
+  addProduct(name: String, description: String, price: Float): Product
+  updateProduct(id: String, name: String, description: String, price: Float): Product
 }
 
 type Subscription {
