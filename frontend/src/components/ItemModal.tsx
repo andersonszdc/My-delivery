@@ -171,7 +171,7 @@ const Index = ({ item, setIsClicked }: IndexProps) => {
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    setOpenModal(true)
+    setInterval(() => setOpenModal(true),1)
   },[])
 
   const Increment = () => {
