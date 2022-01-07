@@ -10,6 +10,7 @@ import leftArrow from '../../assets/leftArrow.svg';
 import Image from 'next/image';
 import logo from '../../assets/logo.png';
 import Cart from '../../components/Cart';
+import Loader from '../../components/Loader';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIASHABLE_KEY!
@@ -24,6 +25,13 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: space-between;
   }
+`;
+
+const WrapperLoader = styled.div`
+  margin-top: 64px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 const Header = styled.div`
@@ -58,7 +66,12 @@ const Checkout = () => {
     data && setClientSecret(data.createPaymentIntent);
   }, [data]);
 
-  if (loading) return <div>loading</div>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader />
+      </WrapperLoader>
+    );
 
   if (error) return <div>error</div>;
 
