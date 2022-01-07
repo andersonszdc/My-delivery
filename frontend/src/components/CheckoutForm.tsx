@@ -10,7 +10,6 @@ const Form = styled.form`
   width: 30vw;
   min-width: 500px;
   align-self: center;
-  margin-top: 24px;
   border-top: 0.5px solid #0000001a;
   padding-top: 24px;
 

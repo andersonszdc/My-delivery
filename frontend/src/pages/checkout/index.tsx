@@ -8,6 +8,8 @@ import styled from 'styled-components';
 import { gql, useMutation } from '@apollo/client';
 import leftArrow from '../../assets/leftArrow.svg';
 import Image from 'next/image';
+import logo from '../../assets/logo.png';
+import Cart from '../../components/Cart';
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLIASHABLE_KEY!
@@ -16,18 +18,19 @@ const stripePromise = loadStripe(
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+
+  .content {
+    margin-top: 32px;
+    display: flex;
+    justify-content: space-between;
+  }
 `;
 
-const Button = styled.div`
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-  box-shadow: 1px 1px 2px 0px #7d7d7d, -1px -1px 2px 0px #ffffff;
-  margin-bottom: 32px;
+const Header = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
   cursor: pointer;
-  padding: 8px 16px;
-  border-radius: 16px;
-  font-weight: 600;
 `;
 
 const CREATE_PAYMENT = gql`
@@ -79,15 +82,18 @@ const Checkout = () => {
     <div>
       {clientSecret && (
         <Wrapper>
-          <Button onClick={ReturnClick}>
+          <Header onClick={ReturnClick}>
+            <Image alt="logo" src={logo} />
+          </Header>
+          <hr className="divider-solid" />
+          <div className="content">
+            <Elements options={options} stripe={stripePromise}>
+              <CheckoutForm clientSecret={clientSecret} />
+            </Elements>
             <div>
-              <Image alt="icon" src={leftArrow} />
+              <Cart isCheckout={true} />
             </div>
-            <span>Voltar</span>
-          </Button>
-          <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm clientSecret={clientSecret} />
-          </Elements>
+          </div>
         </Wrapper>
       )}
     </div>

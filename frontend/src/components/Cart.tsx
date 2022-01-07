@@ -7,11 +7,11 @@ import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
 import ItemCart from './ItemCart';
 
-interface WrapperProps {
+interface HomeCartProps {
   openCart: boolean;
 }
 
-const Wrapper = styled.div<WrapperProps>`
+const HomeCart = styled.div<HomeCartProps>`
   position: fixed;
   right: -400px;
   top: 0;
@@ -28,7 +28,9 @@ const Wrapper = styled.div<WrapperProps>`
   `}
 `;
 
-const Content = styled.div`
+const CheckoutCart = styled.div``;
+
+const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -97,7 +99,7 @@ const Action = styled.div`
   }
 `;
 
-const Cart = ({ setIsOpenModal }: any) => {
+const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const route = useRouter();
   const { state, setState } = useContext(OrderContext);
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
@@ -107,6 +109,56 @@ const Cart = ({ setIsOpenModal }: any) => {
   useEffect(() => {
     setTimeout(() => setOpenCart(true), 1);
   }, []);
+
+  const Content = () => {
+    return (
+      <>
+        <Wrapper>
+          <Header>
+            <h2 className="cart-label">Seu pedido</h2>
+            {!isCheckout && (
+              <div className="btn-close" onClick={closeModal}>
+                <Image alt="icon" src={CancelIcon} />
+              </div>
+            )}
+          </Header>
+          {state.total != 0 ? (
+            <>
+              <hr className="divider-solid" />
+              <div className="cart__items">
+                {state.products.map((item: any, index: number) => (
+                  <ItemCart key={index} index={index} item={item} />
+                ))}
+              </div>
+              <Action>
+                <p>Subtotal</p>
+                <p className="cart__value">{CurrencyConversion(state.total)}</p>
+                <p>Taxa de entrega</p>
+                <p className="cart__value">R$ 5,00</p>
+                <p className="cart__total bold">Total</p>
+                <p className="cart__value bold">
+                  {CurrencyConversion(state.total + 5)}
+                </p>
+                {!isCheckout && (
+                  <>
+                    <hr className="divider-solid hr-grid-column" />
+                    <button
+                      onClick={() => route.push('/checkout')}
+                      className="cart__btn"
+                    >
+                      Realizar pagamento
+                    </button>
+                  </>
+                )}
+              </Action>
+            </>
+          ) : (
+            <div>Sua sacola está vazia :(</div>
+          )}
+        </Wrapper>
+      </>
+    );
+  };
 
   const Decrement = (index: number) => {
     const newProducts = state.products.map((item: any, newIndex: any) =>
@@ -146,47 +198,15 @@ const Cart = ({ setIsOpenModal }: any) => {
     }
   };
 
-  return (
-    <Wrapper openCart={openCart} onClick={clickOut}>
-      <Content>
-        <Header>
-          <h2 className="cart-label">Seu pedido</h2>
-          <div className="btn-close" onClick={closeModal}>
-            <Image alt="icon" src={CancelIcon} />
-          </div>
-        </Header>
-        {state.total != 0 ? (
-          <>
-            <hr className="divider-solid" />
-            <div className="cart__items">
-              {state.products.map((item: any, index: number) => (
-                <ItemCart key={index} index={index} item={item} />
-              ))}
-            </div>
-            <Action>
-              <p>Subtotal</p>
-              <p className="cart__value">{CurrencyConversion(state.total)}</p>
-              <p>Taxa de entrega</p>
-              <p className="cart__value">R$ 5,00</p>
-              <p className="cart__total bold">Total</p>
-              <p className="cart__value bold">
-                {CurrencyConversion(state.total + 5)}
-              </p>
-              <hr className="divider-solid hr-grid-column" />
-              <button
-                onClick={() => route.push('/checkout')}
-                className="cart__btn"
-              >
-                Realizar pagamento
-              </button>
-            </Action>
-          </>
-        ) : (
-          <div>Sua sacola está vazia :(</div>
-        )}
-      </Content>
-    </Wrapper>
+  return isCheckout ? (
+    <CheckoutCart>
+      <Content />
+    </CheckoutCart>
+  ) : (
+    <HomeCart openCart={openCart} onClick={clickOut}>
+      <Content />
+    </HomeCart>
   );
 };
 
-export default Cart;
+export default Index;
