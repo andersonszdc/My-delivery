@@ -193,9 +193,11 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
   };
 
   const clickOut = (e: any) => {
-    if (e.target.className.includes('Wrapper')) {
+    if (e.target.className.includes('HomeCart')) {
+      console.log('funcionou')
       closeModal();
     }
+    console.log('clicou fora')
   };
 
   return isCheckout ? (
