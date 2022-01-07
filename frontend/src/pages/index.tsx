@@ -3,12 +3,20 @@ import Layout from '../components/Layout';
 import { useQuery, gql } from '@apollo/client';
 import { useSubscription } from '@apollo/client';
 import Item from '../components/Item';
+import Loader from '../components/Loader';
 
 const Wrapper = styled.div`
   margin-top: 32px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, auto));
   gap: 16px;
+`;
+
+const WrapperLoader = styled.div`
+  margin-top: 64px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 `;
 
 interface itemProps {
@@ -43,17 +51,24 @@ const Home = () => {
   const { loading, error, data } = useQuery(PRODUCTS);
   // const added = useSubscription(PRODUCT_ADDED);
 
-  if (loading) return <div>loading</div>;
+  if (loading)
+    return (
+      <WrapperLoader>
+        <Loader />
+      </WrapperLoader>
+    );
 
   if (error) return <div>error</div>;
 
-  return <div>
-    <Wrapper>
-    {data.products.map((product: any, index: number) => (
-      <Item key={index} item={product} />
-    ))}
-    </Wrapper>
-  </div>;
+  return (
+    <div>
+      <Wrapper>
+        {data.products.map((product: any, index: number) => (
+          <Item key={index} item={product} />
+        ))}
+      </Wrapper>
+    </div>
+  );
 };
 
 Home.layout = Layout;
