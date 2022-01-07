@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
 import CurrencyConversion from '../functions/CurrencyConversion';
@@ -105,6 +105,7 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [indexDelete, setIndexDelete] = useState(0);
   const [openCart, setOpenCart] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTimeout(() => setOpenCart(true), 1);
@@ -113,7 +114,9 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const Content = () => {
     return (
       <>
-        <Wrapper>
+        <Wrapper
+          ref={wrapperRef}
+        >
           <Header>
             <h2 className="cart-label">Seu pedido</h2>
             {!isCheckout && (
@@ -193,11 +196,10 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
   };
 
   const clickOut = (e: any) => {
-    if (e.target.className.includes('HomeCart')) {
-      console.log('funcionou')
-      closeModal();
-    }
-    console.log('clicou fora')
+     if (!wrapperRef.current?.contains(e.target)) {
+       setOpenCart(false);
+       setTimeout(() => setIsOpenModal(false), 500);
+     }
   };
 
   return isCheckout ? (
@@ -205,7 +207,7 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
       <Content />
     </CheckoutCart>
   ) : (
-    <HomeCart openCart={openCart} onClick={clickOut}>
+    <HomeCart onClick={clickOut} openCart={openCart}>
       <Content />
     </HomeCart>
   );
