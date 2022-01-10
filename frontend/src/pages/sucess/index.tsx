@@ -37,6 +37,8 @@ const Wrapper = styled.div`
     color: #fff;
     padding: 12px;
     font-size: 16px;
+    font-weight: 500;
+    font-family: 'Roboto';
     border: none;
     border-radius: 4px;
     cursor: pointer;
