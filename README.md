@@ -1,4 +1,4 @@
-<h1 align="center">My-site</h1>
+<h1 align="center">My-delivery</h1>
 
 <p align="center">Esse projeto é um sistema delivery desenvolvido com TypeScript, Next.js, Node.js, GraphQL, TypeORM, PostgreSQL.</p>
 
