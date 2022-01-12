@@ -6,7 +6,7 @@ type removeFromOrderProps = {
 
 const removeFromOrder = ({ state, setState, index }: removeFromOrderProps) => {
   const price = state.products[index].price;
-  const newProducts = state.products;
+  const newProducts = state.products
   newProducts.splice(index, 1);
   setState((s) => ({ ...s, products: newProducts, total: s.total - price }));
 };

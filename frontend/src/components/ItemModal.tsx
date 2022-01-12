@@ -8,6 +8,7 @@ import RemoveIcon from '../assets/remove.svg';
 import PlusIcon from '../assets/plus.svg';
 import CancelIcon from '../assets/cancel.svg';
 import addToOrder from '../functions/addToOrder';
+import updateOrder from '../functions/updateOrder';
 
 const Wrapper = styled.div`
   z-index: 1;
@@ -165,29 +166,34 @@ const Header = styled.div`
 `;
 
 interface IndexProps {
-  item: any;
+  item?: any;
   setIsClicked: (arg0: boolean) => void;
+  update?: boolean;
+  index?: number;
 }
 
-const Index = ({ item, setIsClicked }: IndexProps) => {
-  const { setState } = useContext(OrderContext);
-  const [mount, setNumber] = useState(1);
+const Index = ({ item, setIsClicked, update, index }: IndexProps) => {
+  const { state, setState } = useContext(OrderContext);
+  const [mount, setNumber] = useState(item ? 1 : state.products[index!].mount);
   const [openModal, setOpenModal] = useState(false);
+  const [product, setProduct] = useState(item ? item : state.products[index!]);
 
   useEffect(() => {
     setInterval(() => setOpenModal(true), 1);
   }, []);
 
   const Increment = () => {
-    setNumber((number) => number + 1);
+    setNumber((mount: number) => mount + 1);
   };
 
   const Decrement = () => {
-    mount > 1 && setNumber((number) => number - 1);
+    mount > 1 && setNumber((mount: number) => mount - 1);
   };
 
   const AddProduct = () => {
-    addToOrder({ setState, item, mount });
+    update
+      ? updateOrder({ state, setState, index: index as number, newMount: mount })
+      : addToOrder({ setState, item, mount });
     setIsClicked(false);
   };
 
@@ -207,14 +213,14 @@ const Index = ({ item, setIsClicked }: IndexProps) => {
           <Image alt="" layout="responsive" src={pizza} />
         </div>
         <Header>
-          <h2 className="item-name">{item.name}</h2>
+          <h2 className="item-name">{product.name}</h2>
           <div className="btn-close" onClick={() => setIsClicked(false)}>
             <Image alt="icon" src={CancelIcon} />
           </div>
         </Header>
         <Scrolling>
-          <p className="item-description">{item.description}</p>
-          <p className="item-price">{CurrencyConversion(item.price)}</p>
+          <p className="item-description">{product.description}</p>
+          <p className="item-price">{CurrencyConversion(product.price)}</p>
           <div>
             <label className="label-note">Alguma observação?</label>
             <textarea
@@ -240,8 +246,8 @@ const Index = ({ item, setIsClicked }: IndexProps) => {
             />
           </div>
           <button onClick={AddProduct} className="btn-add">
-            <span>Adicionar</span>
-            <span>{CurrencyConversion(mount * item.price)}</span>
+            <span>{update ? 'Atualizar' : 'Adicionar'}</span>
+            <span>{CurrencyConversion(mount * product.price)}</span>
           </button>
         </Action>
       </Content>
