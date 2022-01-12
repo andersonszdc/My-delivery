@@ -10,6 +10,10 @@ type PropsOrderContext = {
   setState: React.Dispatch<React.SetStateAction<OrderType>>;
 };
 
+type ProviderProps = {
+  children: React.ReactNode;
+};
+
 const DEFAULT_VALUE = {
   state: {
     products: [],
@@ -20,7 +24,7 @@ const DEFAULT_VALUE = {
 
 const OrderContext = createContext<PropsOrderContext>(DEFAULT_VALUE);
 
-export const OrderContextProvider = ({ children }: any) => {
+export const OrderContextProvider = ({ children }: ProviderProps) => {
   const [state, setState] = useState(DEFAULT_VALUE.state);
 
   return (

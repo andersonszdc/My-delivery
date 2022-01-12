@@ -2,13 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Image from 'next/image';
 import pizza from '../assets/pizza2.jpg';
-import CurrencyConversion from '../functions/CurrencyConversion';
+import CurrencyConversion from '../utils/CurrencyConversion';
 import OrderContext from '../contexts/OrderContext';
 import RemoveIcon from '../assets/remove.svg';
 import PlusIcon from '../assets/plus.svg';
 import CancelIcon from '../assets/cancel.svg';
+import addToOrder from '../functions/addToOrder';
 
 const Wrapper = styled.div`
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,8 +23,8 @@ const Wrapper = styled.div`
 `;
 
 type ContentProps = {
-  openModal: boolean
-}
+  openModal: boolean;
+};
 
 const Content = styled.div<ContentProps>`
   position: relative;
@@ -36,9 +38,11 @@ const Content = styled.div<ContentProps>`
   border-radius: 8px;
   transform: translateY(50%);
   opacity: 0;
-  transition: .3s ease-in-out;
-  
-  ${props => props.openModal && `
+  transition: 0.3s ease-in-out;
+
+  ${(props) =>
+    props.openModal &&
+    `
     transform: translateY(0%);
     opacity: 1;
   `}
@@ -167,31 +171,24 @@ interface IndexProps {
 
 const Index = ({ item, setIsClicked }: IndexProps) => {
   const { setState } = useContext(OrderContext);
-  const [number, setNumber] = useState(1);
+  const [mount, setNumber] = useState(1);
   const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
-    setInterval(() => setOpenModal(true),1)
-  },[])
+    setInterval(() => setOpenModal(true), 1);
+  }, []);
 
   const Increment = () => {
     setNumber((number) => number + 1);
   };
 
-  const AddOrder = () => {
-    setState((s) => ({
-      ...s,
-      products: [
-        ...s.products,
-        { name: item.name, price: item.price, mount: number },
-      ],
-      total: s.total + number * item.price,
-    }));
-    setIsClicked(false);
+  const Decrement = () => {
+    mount > 1 && setNumber((number) => number - 1);
   };
 
-  const Decrement = () => {
-    number > 1 && setNumber((number) => number - 1);
+  const AddProduct = () => {
+    addToOrder({ setState, item, mount });
+    setIsClicked(false);
   };
 
   const OutsideClick = (e: any) => {
@@ -234,7 +231,7 @@ const Index = ({ item, setIsClicked }: IndexProps) => {
               alt="icon"
               src={RemoveIcon}
             />
-            <span>{number}</span>
+            <span>{mount}</span>
             <Image
               className="controller-btn"
               onClick={Increment}
@@ -242,9 +239,9 @@ const Index = ({ item, setIsClicked }: IndexProps) => {
               src={PlusIcon}
             />
           </div>
-          <button onClick={AddOrder} className="btn-add">
+          <button onClick={AddProduct} className="btn-add">
             <span>Adicionar</span>
-            <span>{CurrencyConversion(number * item.price)}</span>
+            <span>{CurrencyConversion(mount * item.price)}</span>
           </button>
         </Action>
       </Content>

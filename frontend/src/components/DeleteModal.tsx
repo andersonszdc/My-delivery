@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
+import removeFromOrder from '../functions/removeFromOrder';
 
 const Wrapper = styled.div`
   display: flex;
@@ -54,18 +55,15 @@ const Content = styled.div`
 `;
 
 type IndexProps = {
-  index: number
-  close: React.Dispatch<React.SetStateAction<boolean>>
-}
+  index: number;
+  close: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
 const Index = ({ index, close }: IndexProps) => {
   const { state, setState } = useContext(OrderContext);
 
   const handleYes = () => {
-    const price = state.products[index].price;
-    var newProducts = state.products;
-    newProducts.splice(index, 1);
-    setState((s) => ({ ...s, products: newProducts, total: s.total - price }));
+    removeFromOrder({ state, setState, index });
     close(false);
   };
 

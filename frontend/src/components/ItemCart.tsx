@@ -1,9 +1,10 @@
 import React, { useContext, useState } from 'react';
 import OrderContext from '../contexts/OrderContext';
-import CurrencyConversion from '../functions/CurrencyConversion';
+import CurrencyConversion from '../utils/CurrencyConversion';
 import styled from 'styled-components';
 import DeleteModal from './DeleteModal';
 import ItemModal from './ItemModal';
+import Portal from '../HOC/Portal';
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,8 +45,6 @@ type IndexProps = {
 };
 
 const Index = ({ item, index }: IndexProps) => {
-  const { state, setState } = useContext(OrderContext);
-
   const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
   const [isOpenItemModal, setIsOpenItemModal] = useState(false);
 
@@ -78,7 +77,9 @@ const Index = ({ item, index }: IndexProps) => {
       </Wrapper>
 
       {isOpenItemModal && (
-        <ItemModal item={item} setIsClicked={setIsOpenItemModal} />
+        <Portal modal="itemModal">
+          <ItemModal item={item} setIsClicked={setIsOpenItemModal} />
+        </Portal>
       )}
 
       {isOpenDeleteModal && (

@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
-import CurrencyConversion from '../functions/CurrencyConversion';
+import CurrencyConversion from '../utils/CurrencyConversion';
 import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
 import ItemCart from './ItemCart';
@@ -102,8 +102,6 @@ const Action = styled.div`
 const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const route = useRouter();
   const { state, setState } = useContext(OrderContext);
-  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState(false);
-  const [indexDelete, setIndexDelete] = useState(0);
   const [openCart, setOpenCart] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
@@ -114,9 +112,7 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const Content = () => {
     return (
       <>
-        <Wrapper
-          ref={wrapperRef}
-        >
+        <Wrapper ref={wrapperRef}>
           <Header>
             <h2 className="cart-label">Seu pedido</h2>
             {!isCheckout && (
@@ -163,43 +159,16 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
     );
   };
 
-  const Decrement = (index: number) => {
-    const newProducts = state.products.map((item: any, newIndex: any) =>
-      item.mount > 1 && index == newIndex
-        ? { ...item, mount: item.mount - 1 }
-        : item
-    );
-    state.products[index].mount > 1 &&
-      setState((s) => ({
-        ...s,
-        products: newProducts,
-        total: s.total - s.products[index].price,
-      }));
-    setIndexDelete(index);
-    state.products[index].mount == 1 && setIsOpenDeleteModal(true);
-  };
-
-  const Increment = (index: number) => {
-    const newProducts = state.products.map((item: any, newIndex: any) =>
-      index == newIndex ? { ...item, mount: item.mount + 1 } : item
-    );
-    setState((s) => ({
-      ...s,
-      products: newProducts,
-      total: s.total + s.products[index].price,
-    }));
-  };
-
   const closeModal = () => {
     setOpenCart(false);
     setTimeout(() => setIsOpenModal(false), 500);
   };
 
   const clickOut = (e: any) => {
-     if (!wrapperRef.current?.contains(e.target)) {
-       setOpenCart(false);
-       setTimeout(() => setIsOpenModal(false), 500);
-     }
+    if (!wrapperRef.current?.contains(e.target)) {
+      setOpenCart(false);
+      setTimeout(() => setIsOpenModal(false), 500);
+    }
   };
 
   return isCheckout ? (

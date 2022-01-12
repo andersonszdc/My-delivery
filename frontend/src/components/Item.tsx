@@ -4,7 +4,7 @@ import pizza from '../assets/pizza2.jpg';
 import styled from 'styled-components';
 import Portal from '../HOC/Portal';
 import ItemModal from './ItemModal';
-import CurrencyConversion from '../functions/CurrencyConversion';
+import CurrencyConversion from '../utils/CurrencyConversion';
 
 const Wrapper = styled.div`
   display: flex;
