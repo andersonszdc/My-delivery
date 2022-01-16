@@ -1,9 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-@Entity("products")
+@Entity()
 export class Product {
-  @PrimaryColumn()
+  @PrimaryColumn("uuid")
   id: string;
 
   @Column()
@@ -12,11 +12,8 @@ export class Product {
   @Column()
   description: string;
 
-  @Column()
+  @Column("decimal", { precision: 5, scale: 2 })
   price: number;
-
-  @CreateDateColumn()
-  created_at: Date;
 
   constructor() {
     if (!this.id) {
