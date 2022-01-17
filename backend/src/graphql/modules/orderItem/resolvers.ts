@@ -1,3 +1,4 @@
+import { OrderItem } from "../../../entities/OrderItem";
 import { AddOrderItem, GetAllOrderItens } from "../../../services/OrderItem";
 
 export default {
@@ -5,6 +6,6 @@ export default {
     orderItens: async () => await GetAllOrderItens(),
   },
   Mutation: {
-    addOrderItem: async (parent, info) => await AddOrderItem(info),
+    addOrderItem: async (_: any, args: OrderItem) => await AddOrderItem(args),
   },
 };

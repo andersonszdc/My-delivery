@@ -9,10 +9,10 @@ export const GetAllOrderItens = async () => {
   return result;
 };
 
-export const AddOrderItem = async (arg) => {
+export const AddOrderItem = async (args: OrderItem) => {
   const repo = getRepository(OrderItem);
 
-  const orderItem = repo.create(arg);
+  const orderItem = repo.create(args);
 
   const result = await repo.save(orderItem);
 
