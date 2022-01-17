@@ -1,7 +1,5 @@
 import { PubSub } from "graphql-subscriptions";
-import AddProduct from "../../../services/AddProduct";
-import GetAllProducts from "../../../services/GetAllProducts";
-import UpdateProduct from "../../../services/UpdateProduct";
+import { AddProduct, GetAllProducts, UpdateProduct } from "../../../services/Product";
 
 export const pubsub = new PubSub();
 
