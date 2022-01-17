@@ -7,4 +7,8 @@ type OrderItem {
 type Query {
     orderItens: [OrderItem]
 }
+
+type Mutation {
+    addOrderItem(quantity: Int, order: String, product: String): OrderItem
+}
 `;
