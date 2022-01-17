@@ -1,0 +1,7 @@
+type Order {
+  id: String
+}
+
+type Query {
+    GetAllOrders: [Order]
+}

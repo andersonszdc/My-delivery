@@ -1,0 +1,8 @@
+type OrderItem {
+  id: String
+  quantity: Int
+}
+
+type Query {
+    GetAllOrderItens: [OrderItem]
+}
