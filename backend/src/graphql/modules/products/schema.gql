@@ -10,7 +10,12 @@ type Query {
 
 type Mutation {
   addProduct(name: String, description: String, price: Float): Product
-  updateProduct(id: String, name: String, description: String, price: Float): Product
+  updateProduct(
+    id: String
+    name: String
+    description: String
+    price: Float
+  ): Product
 }
 
 type Subscription {

@@ -2,14 +2,10 @@ import { getRepository } from "typeorm";
 import { Product } from "../entities/Product";
 import { pubsub } from "../graphql/modules/products/resolvers";
 
-export const AddProduct = async ({ name, description, price }) => {
+export const AddProduct = async (args: Product) => {
   const repo = getRepository(Product);
 
-  const product = repo.create({
-    name,
-    description,
-    price,
-  });
+  const product = repo.create(args);
 
   await repo.save(product);
 

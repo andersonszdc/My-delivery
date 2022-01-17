@@ -1,5 +1,10 @@
 import { PubSub } from "graphql-subscriptions";
-import { AddProduct, GetAllProducts, UpdateProduct } from "../../../services/Product";
+import { Product } from "../../../entities/Product";
+import {
+  AddProduct,
+  GetAllProducts,
+  UpdateProduct,
+} from "../../../services/Product";
 
 export const pubsub = new PubSub();
 
@@ -8,11 +13,11 @@ export default {
     products: async () => await GetAllProducts(),
   },
   Mutation: {
-    addProduct: async (parent, { name, description, price }) => {
-      return await AddProduct({ name, description, price });
+    addProduct: async (_: any, arg: Product) => {
+      return await AddProduct(arg);
     },
-    updateProduct: async (parent, { id, name, description, price }) => {
-      return await UpdateProduct({ id, name, description, price });
+    updateProduct: async (_: any, arg: Product) => {
+      return await UpdateProduct(arg);
     },
   },
   Subscription: {
