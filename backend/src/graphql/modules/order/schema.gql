@@ -3,9 +3,9 @@ type Order {
 }
 
 type Query {
-    orders: [Order]
+  orders: [Order]
 }
 
 type Mutation {
-    addOrder: Order
+  addOrder: Order
 }

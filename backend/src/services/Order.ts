@@ -9,10 +9,10 @@ export const GetAllOrders = async () => {
   return result;
 };
 
-export const AddOrder = async (info) => {
+export const AddOrder = async (args: Order) => {
   const repo = getRepository(Order);
 
-  const order = repo.create(info);
+  const order = repo.create(args);
 
   const result = await repo.save(order);
 
