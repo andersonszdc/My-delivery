@@ -1,9 +1,12 @@
-import { GetAllOrders } from "../../../services/Order"
+import { AddOrder, GetAllOrders } from "../../../services/Order";
 
 export default {
-    Query: {
-        getAllOrders: async () => {
-            return await GetAllOrders()
-        }
-    }
-}
+  Query: {
+    orders: async () => await GetAllOrders(),
+  },
+  Mutation: {
+    addOrder: async (parent, arg) => {
+      return await AddOrder(arg);
+    },
+  },
+};

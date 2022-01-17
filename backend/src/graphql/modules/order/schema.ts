@@ -4,6 +4,10 @@ type Order {
 }
 
 type Query {
-    getAllOrders: [Order]
+    orders: [Order]
+}
+
+type Mutation {
+    addOrder: Order
 }
 `;

@@ -5,6 +5,6 @@ type OrderItem {
 }
 
 type Query {
-    getAllOrderItens: [OrderItem]
+    orderItens: [OrderItem]
 }
 `;

@@ -1,9 +1,7 @@
-import { GetAllOrderItens } from "../../../services/OrderItem"
+import { GetAllOrderItens } from "../../../services/OrderItem";
 
 export default {
-    Query: {
-        getAllOrderItens: async () => {
-            return await GetAllOrderItens()
-        }
-    }
-}
+  Query: {
+    orderItens: async () => await GetAllOrderItens(),
+  },
+};
