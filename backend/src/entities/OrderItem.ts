@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { Order } from "./Order";
 import { Product } from "./Product";
@@ -11,8 +11,7 @@ export class OrderItem {
   @ManyToOne(() => Order)
   order: Order;
 
-  @OneToOne(() => Product)
-  @JoinColumn()
+  @ManyToOne(() => Product)
   product: Product;
 
   @Column("int")
