@@ -182,7 +182,7 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
         variables: {
           quantity: item.mount,
           order: data.addOrder.id,
-          product: 'f66d3e9c-ccd0-409f-a6b5-df6b253955d7',
+          product: 'f6c6e820-8b50-44ef-9d91-d0a7ee34459a',
         },
       })
     );
