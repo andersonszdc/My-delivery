@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import OrderContext from '../contexts/OrderContext';
@@ -6,6 +6,7 @@ import CurrencyConversion from '../utils/CurrencyConversion';
 import CancelIcon from '../assets/cancel.svg';
 import Image from 'next/image';
 import ItemCart from './ItemCart';
+import { gql, useMutation } from '@apollo/client';
 
 interface HomeCartProps {
   openCart: boolean;
@@ -19,7 +20,7 @@ const HomeCart = styled.div<HomeCartProps>`
   height: 100%;
   display: flex;
   justify-content: right;
-  transition: 0.5s ease-in-out;
+  transition: 0.4s ease-out;
 
   ${(props) =>
     props.openCart &&
@@ -99,11 +100,29 @@ const Action = styled.div`
   }
 `;
 
+const ADD_ORDER_ITEM = gql`
+  mutation AddOrderItem($quantity: Int, $order: String, $product: String) {
+    addOrderItem(quantity: $quantity, order: $order, product: $product) {
+      id
+    }
+  }
+`;
+
+const ADD_ORDER = gql`
+  mutation AddOrder {
+    addOrder {
+      id
+    }
+  }
+`;
+
 const Index = ({ setIsOpenModal, isCheckout }: any) => {
   const route = useRouter();
   const { state, setState } = useContext(OrderContext);
   const [openCart, setOpenCart] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const [addOrder] = useMutation(ADD_ORDER);
+  const [addOrderItem] = useMutation(ADD_ORDER_ITEM);
 
   useEffect(() => {
     setTimeout(() => setOpenCart(true), 1);
@@ -141,10 +160,7 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
                 {!isCheckout && (
                   <>
                     <hr className="divider-solid hr-grid-column" />
-                    <button
-                      onClick={() => route.push('/checkout')}
-                      className="cart__btn"
-                    >
+                    <button onClick={createOrder} className="cart__btn">
                       Realizar pagamento
                     </button>
                   </>
@@ -159,15 +175,29 @@ const Index = ({ setIsOpenModal, isCheckout }: any) => {
     );
   };
 
+  const createOrder = async () => {
+    const { data } = await addOrder();
+    await state.products.map((item: any) =>
+      addOrderItem({
+        variables: {
+          quantity: item.mount,
+          order: data.addOrder.id,
+          product: 'f66d3e9c-ccd0-409f-a6b5-df6b253955d7',
+        },
+      })
+    );
+    route.push('/checkout');
+  };
+
   const closeModal = () => {
     setOpenCart(false);
-    setTimeout(() => setIsOpenModal(false), 500);
+    setTimeout(() => setIsOpenModal(false), 400);
   };
 
   const clickOut = (e: any) => {
     if (!wrapperRef.current?.contains(e.target)) {
       setOpenCart(false);
-      setTimeout(() => setIsOpenModal(false), 500);
+      setTimeout(() => setIsOpenModal(false), 400);
     }
   };
 
